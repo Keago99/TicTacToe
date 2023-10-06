@@ -1,0 +1,19 @@
+#navBar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid;
+    color: #00ffff;
+}
+
+.grid {
+    display: grid;
+    gap: 1px;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+  }
+
+  div > div {
+    padding: 10px;
+    background-color: #ccc;
+  }
