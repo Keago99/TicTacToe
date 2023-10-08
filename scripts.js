@@ -10,6 +10,27 @@ const boardModule = (() => {
     // An array where the board information is stored, with 9 slots.
     boardArray = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", ];
 
+
+    const player1 = playerFactory("player1", "x");
+    const player2 = playerFactory("player2", "o");
+
+    const playerTurn = "p1";
+    const winningPlayer = null;
+
+    const getWinningPlayer = () => winningPlayer;
+
+    const getPlayerTurn = () => playerTurn;
+
+    const changeTurn = () => {
+        if (playerTurn === "p1"){
+            playerTurn = "p2";
+        }
+        else{
+            playerTurn = "p1";
+        }
+    }
+
+
     // Adding all the ticBoxes to a DOM collection of elements.
     const ticBoxes = document.querySelectorAll('.ticBox');
 
@@ -24,7 +45,7 @@ const boardModule = (() => {
             }
             else if (boardArray[i] == "o")
             {
-                console.log(currentTicBox);
+                ticBoxes[i].innerHTML = "o";
             }
         }
     }
@@ -35,6 +56,7 @@ const boardModule = (() => {
         if (boardArray[numberInArray] == "empty"){
             boardArray.splice(numberInArray, 1, "x");
             updateBoard();
+            updateDisplay();
         }
         else{
             alert("this has a thinngy already");
@@ -47,13 +69,20 @@ const boardModule = (() => {
         ticBoxes[i].addEventListener('click', clickBox);
         ticBoxes[i].dataset.Number = i;
     }
+
+    //return get methods for WinningPlayer and the Players turn, to be used in displayController.
+    return {getWinningPlayer, getPlayerTurn};
 })();
 
 
 // a module controller for the game
-const gameController =  (() => {
+const displayController =  (() => {
 
-function playTurn(){
+    const mainDisplay = document.querySelector('#turnWinDisplay');
 
-}
+    updateDisplay = () => {
+        mainDisplay.innerText = "yeaaaaahhh BOIIIII";
+    };
+
+    return {updateDisplay}
 })();
