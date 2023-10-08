@@ -8,20 +8,44 @@ const playerFactory = (name, symbol) => {
 const boardModule = (() => {
 
     // An array where the board information is stored, with 9 slots.
-    boardArray = [8];
+    boardArray = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", ];
 
     // Adding all the ticBoxes to a DOM collection of elements.
     const ticBoxes = document.querySelectorAll('.ticBox');
 
+    function updateBoard(){
+        for (i = 0; i < boardArray.length; i++){
+            if (boardArray[i] == "empty"){
+                ticBoxes[i].innerHTML = "empty";
+            }
+            else if (boardArray[i] == "x")
+            {
+                ticBoxes[i].innerHTML = "x";
+            }
+            else if (boardArray[i] == "o")
+            {
+                console.log(currentTicBox);
+            }
+        }
+    }
+
     // A function that happens when the user clicks on any of the boards.
     function clickBox(){
-        this.innerText = "testo";
+        let numberInArray = this.dataset.Number;
+        if (boardArray[numberInArray] == "empty"){
+            boardArray.splice(numberInArray, 1, "x");
+            updateBoard();
+        }
+        else{
+            alert("this has a thinngy already");
+        }
+
     }
   
-
+    // adding click eventlisteners to each checkbox.
     for (i = 0; i < ticBoxes.length; i++){
         ticBoxes[i].addEventListener('click', clickBox);
-        ticBoxes[i].dataset.Name = i;
+        ticBoxes[i].dataset.Number = i;
     }
 })();
 
@@ -29,4 +53,7 @@ const boardModule = (() => {
 // a module controller for the game
 const gameController =  (() => {
 
+function playTurn(){
+
+}
 })();
