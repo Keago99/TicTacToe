@@ -14,7 +14,7 @@ const boardModule = (() => {
     const player1 = playerFactory("player1", "x");
     const player2 = playerFactory("player2", "o");
 
-    const playerTurn = "p1";
+    var playerTurn = "p1";
     const winningPlayer = null;
 
     const getWinningPlayer = () => winningPlayer;
@@ -54,7 +54,14 @@ const boardModule = (() => {
     function clickBox(){
         let numberInArray = this.dataset.Number;
         if (boardArray[numberInArray] == "empty"){
-            boardArray.splice(numberInArray, 1, "x");
+            currentPlayerTurn = getPlayerTurn();
+            if (currentPlayerTurn === "p1"){
+                boardArray.splice(numberInArray, 1, "x");
+            }
+            else if (currentPlayerTurn === "p2"){
+                boardArray.splice(numberInArray, 1, "o");
+            }
+            changeTurn();
             updateBoard();
             updateDisplay();
         }
