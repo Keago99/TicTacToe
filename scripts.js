@@ -9,10 +9,14 @@ const boardModule = (() => {
 
     // An array where the board information is stored, with 9 slots.
     boardArray = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", ];
-
+    
 
     const player1 = playerFactory("player1", "x");
     const player2 = playerFactory("player2", "o");
+    var squareScores = [1, 2, 4, 8, 16, 32, 64, 128, 256];
+    var wins = [7, 56, 448, 73, 146, 292, 273, 84];
+    var play1Score = 0;
+    var play2Score = 0;
 
     var playerTurn = "p1";
     const winningPlayer = null;
@@ -20,6 +24,14 @@ const boardModule = (() => {
     const getWinningPlayer = () => winningPlayer;
 
     const getPlayerTurn = () => playerTurn;
+
+    const winningConditions = (array1, array2) =>
+        array2.every((element) =>
+        array1.includes(element));
+
+    const checkWinningConditions = () => {
+        
+    }
 
     const changeTurn = () => {
         if (playerTurn === "p1"){
@@ -52,14 +64,25 @@ const boardModule = (() => {
 
     // A function that happens when the user clicks on any of the boards.
     function clickBox(){
-        let numberInArray = this.dataset.Number;
-        if (boardArray[numberInArray] == "empty"){
-            currentPlayerTurn = getPlayerTurn();
+        var numberInArray = this.dataset.Number;
+        if (boardArray[numberInArray] === "empty"){
+             var currentPlayerTurn = getPlayerTurn();
             if (currentPlayerTurn === "p1"){
                 boardArray.splice(numberInArray, 1, "x");
+                play1Score += squareScores[numberInArray];
+                console.log("player 1s score is: " + play1Score);    
             }
-            else if (currentPlayerTurn === "p2"){
+            if (currentPlayerTurn === "p2"){
                 boardArray.splice(numberInArray, 1, "o");
+                play2Score += squareScores[numberInArray];
+                console.log("player 2s score is: " + play2Score);
+            }
+   
+            if (winnerCheck(play1Score)){
+                console.log("p1 has won");
+            }
+            if (winnerCheck(play2Score)){
+                console.log("p2 has won");
             }
             changeTurn();
             updateBoard();
@@ -70,7 +93,10 @@ const boardModule = (() => {
         }
 
     }
-  
+
+    const winnerCheck = (score) =>  wins.includes(score)
+
+
     // adding click eventlisteners to each checkbox.
     for (i = 0; i < ticBoxes.length; i++){
         ticBoxes[i].addEventListener('click', clickBox);
