@@ -8,8 +8,9 @@ const playerFactory = (name, symbol) => {
 const boardModule = (() => {
 
     // An array where the board information is stored, with 9 slots.
-    boardArray = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", ];
+    boardArray = [" ", " ", " ", " ", " ", " ", " ", " ", " ", ];
     
+    var body = document.getElementsByTagName("BODY")[0];
 
     const player1 = playerFactory("player1", "x");
     const player2 = playerFactory("player2", "o");
@@ -48,16 +49,16 @@ const boardModule = (() => {
 
     function updateBoard(){
         for (i = 0; i < boardArray.length; i++){
-            if (boardArray[i] == "empty"){
-                ticBoxes[i].innerHTML = "empty";
+            if (boardArray[i] == " "){
+                ticBoxes[i].innerHTML = " ";
             }
-            else if (boardArray[i] == "x")
+            else if (boardArray[i] == "X")
             {
-                ticBoxes[i].innerHTML = "x";
+                ticBoxes[i].innerHTML = "X";
             }
-            else if (boardArray[i] == "o")
+            else if (boardArray[i] == "O")
             {
-                ticBoxes[i].innerHTML = "o";
+                ticBoxes[i].innerHTML = "O";
             }
         }
     }
@@ -65,17 +66,23 @@ const boardModule = (() => {
     // A function that happens when the user clicks on any of the boards.
     function clickBox(){
         var numberInArray = this.dataset.Number;
-        if (boardArray[numberInArray] === "empty"){
+        if (boardArray[numberInArray] === " "){
              var currentPlayerTurn = getPlayerTurn();
             if (currentPlayerTurn === "p1"){
-                boardArray.splice(numberInArray, 1, "x");
+                this.classList.add('greeno');
+                boardArray.splice(numberInArray, 1, "X");
                 play1Score += squareScores[numberInArray];
-                console.log("player 1s score is: " + play1Score);    
+                console.log("player 1s score is: " + play1Score);
+                body.classList.add('backReddo');
+                body.classList.remove('backGreeno');
             }
             if (currentPlayerTurn === "p2"){
-                boardArray.splice(numberInArray, 1, "o");
+                this.classList.add('reddo');
+                boardArray.splice(numberInArray, 1, "O");
                 play2Score += squareScores[numberInArray];
                 console.log("player 2s score is: " + play2Score);
+                body.classList.add('backGreeno');
+                body.classList.remove('backReddo');
             }
    
             if (winnerCheck(play1Score)){
