@@ -1,8 +1,11 @@
+ 
 
 // Player factory to create player objects. 
 const playerFactory = (name, symbol) => {
     return {name, symbol};
 };
+
+
 
 // BoardModule for things that have to do with the gameboard only
 const boardModule = (() => {
@@ -24,7 +27,7 @@ const boardModule = (() => {
 
     const getWinningPlayer = () => winningPlayer;
 
-    const getPlayerTurn = () => playerTurn;
+    getPlayerTurn = () => playerTurn;
 
     const winningConditions = (array1, array2) =>
         array2.every((element) =>
@@ -121,7 +124,8 @@ const displayController =  (() => {
     const mainDisplay = document.querySelector('#turnWinDisplay');
 
     updateDisplay = () => {
-        mainDisplay.innerText = "yeaaaaahhh BOIIIII";
+        currentTurn = getPlayerTurn();
+        mainDisplay.innerText = "It's currently " + currentTurn + "'s turn";
     };
 
     return {updateDisplay}
