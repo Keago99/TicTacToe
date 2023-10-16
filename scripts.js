@@ -10,6 +10,7 @@ const playerFactory = (name, symbol) => {
 // BoardModule for things that have to do with the gameboard only
 const boardModule = (() => {
 
+
     // An array where the board information is stored, with 9 slots.
     boardArray = [" ", " ", " ", " ", " ", " ", " ", " ", " ", ];
     
@@ -18,12 +19,14 @@ const boardModule = (() => {
     const player1 = playerFactory("player1", "x");
     const player2 = playerFactory("player2", "o");
     var squareScores = [1, 2, 4, 8, 16, 32, 64, 128, 256];
-    var wins = [7, 56, 448, 73, 146, 292, 273, 84];
+    var wins = [7, 56, 448, 73, 146, 292, 273, 84, 277, 281, 305];
     var play1Score = 0;
     var play2Score = 0;
 
     var playerTurn = "p1";
     var winningPlayer = null;
+
+    
 
     getWinningPlayer = () => winningPlayer;
 
@@ -72,6 +75,8 @@ const boardModule = (() => {
         if (boardArray[numberInArray] === " "){
              var currentPlayerTurn = getPlayerTurn();
             if (currentPlayerTurn === "p1"){
+                this.classList.remove('greeno');
+                this.classList.remove('reddo');
                 this.classList.add('greeno');
                 boardArray.splice(numberInArray, 1, "X");
                 play1Score += squareScores[numberInArray];
@@ -80,6 +85,8 @@ const boardModule = (() => {
                 body.classList.remove('backGreeno');
             }
             if (currentPlayerTurn === "p2"){
+                this.classList.remove('greeno');
+                this.classList.remove('reddo');
                 this.classList.add('reddo');
                 boardArray.splice(numberInArray, 1, "O");
                 play2Score += squareScores[numberInArray];
@@ -108,13 +115,40 @@ const boardModule = (() => {
 
 
     // adding click eventlisteners to each checkbox.
-    for (i = 0; i < ticBoxes.length; i++){
-        ticBoxes[i].addEventListener('click', clickBox);
-        ticBoxes[i].dataset.Number = i;
+        for (i = 0; i < ticBoxes.length; i++){
+            ticBoxes[i].addEventListener('click', clickBox);
+            ticBoxes[i].dataset.Number = i;
+        }
+
+
+
+    
+
+    removePlayability = () => {
+        for(j = 0; j < ticBoxes.length; j++){
+            ticBoxes[j].removeEventListener('click', clickBox);
+        }
+    }
+
+    resetBoard = () => {
+        winningPlayer = null;
+        play1Score = 0;
+        play2Score = 0;
+        playerTurn = "p1";
+        boardArray = [" ", " ", " ", " ", " ", " ", " ", " ", " ", ];
+        for (i = 0; i < ticBoxes.length; i++){
+            ticBoxes[i].addEventListener('click', clickBox);
+        }
+        updateBoard();
+        updateDisplay();
+        body.classList.remove('backReddo');
+        body.classList.remove('backGreeno');
+        body.classList.add('backGreeno');
+
     }
 
     //return get methods for WinningPlayer and the Players turn, to be used in displayController.
-    return {getWinningPlayer, getPlayerTurn};
+    return {getWinningPlayer, getPlayerTurn, removePlayability, resetBoard};
 })();
 
 
@@ -122,6 +156,10 @@ const boardModule = (() => {
 const displayController =  (() => {
 
     const mainDisplay = document.querySelector('#turnWinDisplay');
+    const resetButton = document.querySelector('#resetButton');
+
+    resetButton.addEventListener('click', resetBoard);
+
 
     updateDisplay = () => {
         isThereaWinnner = getWinningPlayer();
@@ -132,13 +170,16 @@ const displayController =  (() => {
         else{
             if (isThereaWinnner === "p1"){
                 mainDisplay.innerText = "Player 1 has won!";
+                removePlayability();
             }
             if (isThereaWinnner === "p2"){
                 mainDisplay.innerText = "Player 2 has won!";
+                removePlayability();
             }
         }
 
     };
 
+    
     return {updateDisplay}
 })();
