@@ -23,9 +23,9 @@ const boardModule = (() => {
     var play2Score = 0;
 
     var playerTurn = "p1";
-    const winningPlayer = null;
+    var winningPlayer = null;
 
-    const getWinningPlayer = () => winningPlayer;
+    getWinningPlayer = () => winningPlayer;
 
     getPlayerTurn = () => playerTurn;
 
@@ -89,10 +89,10 @@ const boardModule = (() => {
             }
    
             if (winnerCheck(play1Score)){
-                console.log("p1 has won");
+                winningPlayer = "p1";
             }
             if (winnerCheck(play2Score)){
-                console.log("p2 has won");
+                winningPlayer = "p2";
             }
             changeTurn();
             updateBoard();
@@ -124,8 +124,20 @@ const displayController =  (() => {
     const mainDisplay = document.querySelector('#turnWinDisplay');
 
     updateDisplay = () => {
-        currentTurn = getPlayerTurn();
-        mainDisplay.innerText = "It's currently " + currentTurn + "'s turn";
+        isThereaWinnner = getWinningPlayer();
+        if (isThereaWinnner === null){
+            currentTurn = getPlayerTurn();
+            mainDisplay.innerText = "It's currently " + currentTurn + "'s turn";
+        }
+        else{
+            if (isThereaWinnner === "p1"){
+                mainDisplay.innerText = "Player 1 has won!";
+            }
+            if (isThereaWinnner === "p2"){
+                mainDisplay.innerText = "Player 2 has won!";
+            }
+        }
+
     };
 
     return {updateDisplay}
