@@ -16,6 +16,7 @@ const boardModule = (() => {
     
     var body = document.getElementsByTagName("BODY")[0];
 
+    const mainDisplay = document.querySelector('#turnWinDisplay');
     const player1 = playerFactory("player1", "x");
     const player2 = playerFactory("player2", "o");
     var squareScores = [1, 2, 4, 8, 16, 32, 64, 128, 256];
@@ -104,14 +105,16 @@ const boardModule = (() => {
             changeTurn();
             updateBoard();
             updateDisplay();
+            checkForDraw();
         }
         else{
-            alert("this has a thinngy already");
+            alert("Square is occupied, please play somewhere else");
         }
 
     }
 
     const winnerCheck = (score) =>  wins.includes(score)
+
 
 
     // adding click eventlisteners to each checkbox.
@@ -178,8 +181,20 @@ const displayController =  (() => {
             }
         }
 
-    };
+
+    }
+
+    checkForDraw = () => {
+        if (boardArray.includes(" ")){
+            console.log ("not a draw yet");
+        }
+        else{
+            console.log ("its a draw!");
+            mainDisplay.innerText = "Its a draw!";
+            removePlayability();
+        }
+    }
 
     
-    return {updateDisplay}
+    return {updateDisplay, checkForDraw}
 })();
